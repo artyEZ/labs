@@ -18,7 +18,8 @@ for line in f:
     f_all_splited = line.split(";")
     for i in range(len(f_all_splited)):
         dates_from_splited_file = re.findall(r'(\d{4}\-\d{2}\-\d{2})', f_all_splited[i])
-        print(*dates_from_splited_file)
+        data_from_splited_file = re.findall(r'(^\d+(?:[\.]\d+)?$)', f_all_splited[i])
+        print(*data_from_splited_file)
 
 
 
