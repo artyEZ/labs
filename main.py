@@ -10,7 +10,7 @@ with open("C:/Users/artyo/Desktop/dataset.csv", "w") as file:
     writer = csv.writer(file, delimiter=";")
     writer.writerow(HEADER)
 
-for i in range(1, 10):
+while True:
     html_text = requests.get(URL).text
     json_pars = json.loads(html_text)
 
@@ -23,9 +23,8 @@ for i in range(1, 10):
     final_previous_day_url = previous_day_url.replace("//", "")
     switch_current_day_url = "http://" + final_previous_day_url
 
-    with open("C:/Users/artyo/Desktop/dataset.csv", "a") as file:
-        writer = csv.writer(file, delimiter=";")
+    with open("C:/Users/artyo/Desktop/dataset.csv", "a", newline="") as file:
+        writer = csv.writer(file,  delimiter=";")
         writer.writerow([str(*final_current_day), current_course])
 
     URL = switch_current_day_url
-
