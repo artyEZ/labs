@@ -2,13 +2,15 @@ import json
 import re
 import requests
 import csv
+import pandas as pd
 
 URL = " http://www.cbr-xml-daily.ru/archive/2022/09/17/daily_json.js"
 HEADER = ["Day", "Excange rate"]
+write_to_file = "C:/Users/artyo/Desktop/dataset.csv"
 
-with open("C:/Users/artyo/Desktop/dataset.csv", "w") as file:
-    writer = csv.writer(file, delimiter=";")
-    writer.writerow(HEADER)
+with open(write_to_file, 'w') as file:
+    dw = csv.DictWriter(file, delimiter=';', fieldnames=HEADER)
+    dw.writeheader()
 
 while True:
     html_text = requests.get(URL).text
@@ -23,7 +25,7 @@ while True:
     final_previous_day_url = previous_day_url.replace("//", "")
     switch_current_day_url = "http://" + final_previous_day_url
 
-    with open("C:/Users/artyo/Desktop/dataset.csv", "a", newline="") as file:
+    with open(write_to_file, "a", newline="") as file:
         writer = csv.writer(file,  delimiter=";")
         writer.writerow([str(*final_current_day), current_course])
 
