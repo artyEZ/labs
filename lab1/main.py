@@ -14,7 +14,6 @@ with open(write_to_file, "w") as file:
     dw.writeheader()
 
 while True:
-    row = []
     html_text = requests.get(URL).text
     json_pars = json.loads(html_text)
 
