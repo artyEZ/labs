@@ -11,7 +11,6 @@ file = "C:/Users/artyo/Desktop/dataset.csv"
 df = pd.read_csv(file)
 
 row_number = len(df.index)
-print(row_number)
 column_day_data = df["Day"].tolist()
 column_data_data = df["Exchange rate"].tolist()
 
