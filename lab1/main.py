@@ -25,8 +25,7 @@ while True:
     previous_day_url = json_pars["PreviousURL"]
     final_previous_day_url = previous_day_url.replace("//", "")
     switch_current_day_url = "http://" + final_previous_day_url
-    finish_current_day = str(final_current_day)[1:-1]
-    finish_current_day = finish_current_day.replace("'", "")
+    finish_current_day = str(final_current_day)[2:-2]
     with open(write_to_file, "a", newline="") as file:
         writer = csv.DictWriter(file, fieldnames=HEADER)
         writer.writerow({"Day": finish_current_day, "Exchange rate": current_course})
