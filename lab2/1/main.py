@@ -1,15 +1,6 @@
 import csv
 import pandas as pd
 
-# my_file_for_dates = open("X.csv", "w+")
-# my_file_for_dates.close()
-#
-# my_file_for_data = open("Y.csv", "w+")
-# my_file_for_data.close()
-#
-# file = "C:/Users/artyo/Desktop/dataset.csv"
-# df = pd.read_csv(file)
-
 
 def write_to_file(input_file: str) -> None:
     df = pd.read_csv(input_file)
