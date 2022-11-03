@@ -1,5 +1,5 @@
 import pandas as pd
-from typing import NoReturn
+import autopep8
 
 
 def formatted_file(input_file: str) -> pd.DataFrame:
@@ -16,7 +16,7 @@ def clear_file(df: pd.DataFrame) -> pd.DataFrame:
     del df["Year"]
     del df["Week"]
     del df["Day1"]
-    return  df
+    return df
 
 
 def range_of_years(input_file: str) -> list:
@@ -33,7 +33,7 @@ def range_of_weeks(df: pd.DataFrame) -> list:
     return [start_range, end_range]
 
 
-def write_to_file(input_file: str) -> pd.DataFrame:
+def write_to_file(input_file: str) -> None:
     df = formatted_file(input_file)
 
     range_of_years_list = range_of_years(input_file)
@@ -43,10 +43,12 @@ def write_to_file(input_file: str) -> pd.DataFrame:
         lf = df[df["Year"] == years]
         range_of_weeks_list = range_of_weeks(lf)
 
-        for weeks in range(range_of_weeks_list[0], range_of_weeks_list[1] - 1, -1):
+        for weeks in range(
+                range_of_weeks_list[0], range_of_weeks_list[1] - 1, -1):
             try:
                 sf = lf[lf["Week"] == weeks]
-                data = str(sf["Day1"].iloc[1]).replace("-", "") + "_" + str(sf["Day1"].iloc[-1]).replace("-", "")
+                data = str(sf["Day1"].iloc[1]).replace("-", "") + \
+                    "_" + str(sf["Day1"].iloc[-1]).replace("-", "")
 
                 clear_file(sf)
 
@@ -54,11 +56,7 @@ def write_to_file(input_file: str) -> pd.DataFrame:
             except Exception:
                 pass
 
-    # data = str(lf["Day"].iloc[0]).replace("-", "") + "_" + str(lf["Day"].iloc[lf.shape[0] - 1]).replace("-", "")
-    # lf.to_csv(data + ".csv", index=False)
-
 
 if __name__ == "__main__":
     file = "C:/Users/artyo/Desktop/dataset.csv"
-    # print(formatted_file(file))
     write_to_file(file)
