@@ -27,5 +27,3 @@ if __name__ == "__main__":
     file = "C:/Users/artyo/Desktop/dataset.csv"
 
     write_to_file(file)
-
-
