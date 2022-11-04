@@ -1,29 +1,15 @@
-import csv
 import pandas as pd
 
 
-def write_to_file(input_file: str) -> None:
+def write_to_file(input_file: str, file_for_x: str, file_for_y:str) -> None:
     df = pd.read_csv(input_file)
-
-    row_number = len(df.index)
-    column_day_data = df["Day"].tolist()
-    column_data_data = df["Exchange rate"].tolist()
-
-    f = open(input_file)
-    for i in range(row_number):
-        with open("X.csv", "a", newline="") as f:
-            writer = csv.writer(f, delimiter="\n")
-            writer.writerow([column_day_data[i]])
-
-        with open("Y.csv", "a", newline="") as f:
-            writer = csv.writer(f, delimiter="\n")
-            writer.writerow([column_data_data[i]])
-    f.close()
+    df["Day"].to_csv(file_for_x, index=False)
+    df["Exchange rate"].to_csv(file_for_y, index=False)
 
 
 if __name__ == "__main__":
-    my_file_for_dates = open("X.csv", "w+")
-    my_file_for_data = open("Y.csv", "w+")
+    my_file_for_dates = "X.csv"
+    my_file_for_data = "Y.csv"
     file = "C:/Users/artyo/Desktop/dataset.csv"
 
-    write_to_file(file)
+    write_to_file(file, my_file_for_dates, my_file_for_data)
