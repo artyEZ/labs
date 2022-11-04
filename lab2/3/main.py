@@ -43,6 +43,10 @@ def write_to_file(input_file: str) -> None:
         lf = df[df["Year"] == years]
         range_of_weeks_list = range_of_weeks(lf)
 
+        if range_of_weeks_list[0] < range_of_weeks_list[1]:
+            range_of_weeks_list[0] = range_of_weeks_list[1]
+            range_of_weeks_list[1] = 2
+
         for weeks in range(
                 range_of_weeks_list[0], range_of_weeks_list[1] - 1, -1):
             try:
