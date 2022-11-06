@@ -43,7 +43,7 @@ class DateIteratorYearOrWeek:
         self.counter = 0
         self.df = pd.DataFrame()
         for root, dirs, files in os.walk(name):
-            for filename in files[-2: 0 : -1]:
+            for filename in files[-2: 0: -1]:
                 data = os.path.join(root, filename)
                 yf = pd.read_csv(data)
                 self.df = pd.concat([self.df, yf], ignore_index=True)
