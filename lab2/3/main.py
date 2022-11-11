@@ -27,38 +27,40 @@ def range_of_years(input_file: str) -> list:
     return [start_range, end_range]
 
 
-def range_of_weeks(df: pd.DataFrame) -> list:
-    start_range = df["Week"].iat[0]
-    end_range = df["Week"].iat[-1]
-    return [start_range, end_range]
+def max_week(df: pd.DataFrame) -> int:
+    start_range = df[df["Week"] == df["Week"].max()]
+    value = start_range["Week"].values[0]
+    return value
+
+
+def min_week(df: pd.DataFrame) -> int:
+    end_range = df[df["Week"] == df["Week"].min()]
+    value = end_range["Week"].values[0]
+    return value
 
 
 def write_to_file(input_file: str) -> None:
     df = formatted_file(input_file)
-
     range_of_years_list = range_of_years(input_file)
-    # print(range_of_years_list[1])
+
     for years in range(range_of_years_list[0], range_of_years_list[1] - 1, -1):
-
         lf = df[df["Year"] == years]
-        range_of_weeks_list = range_of_weeks(lf)
-
-        if range_of_weeks_list[0] < range_of_weeks_list[1]:
-            range_of_weeks_list[0] = range_of_weeks_list[1]
-            range_of_weeks_list[1] = 2
 
         for weeks in range(
-                range_of_weeks_list[0], range_of_weeks_list[1] - 1, -1):
+                max_week(lf), min_week(lf) - 1, -1):
             try:
                 sf = lf[lf["Week"] == weeks]
-                data = str(sf["Day1"].iloc[1]).replace("-", "") + \
-                    "_" + str(sf["Day1"].iloc[-1]).replace("-", "")
-
+                if sf.empty:
+                    break
+                elif sf.shape[0] == 1:
+                    data = str(sf["Day1"].iloc[0]).replace("-", "") + "_" + str(sf["Day1"].iloc[0]).replace("-", "")
+                else:
+                    data = str(sf["Day1"].iloc[0]).replace("-", "") + "_" + str(sf["Day1"].iloc[-1]).replace("-", "")
                 clear_file(sf)
 
                 sf.to_csv(data + ".csv", index=False)
-            except Exception:
-                pass
+            except Exception as e:
+                print(e)
 
 
 if __name__ == "__main__":
