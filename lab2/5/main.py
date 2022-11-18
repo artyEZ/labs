@@ -57,12 +57,15 @@ class DateIteratorYearOrWeek:
 
 
 if __name__ == "__main__":
-    # obj = DateIterator()
-    # while True:
-    #     print(next(obj))
-    # obj = DateIteratorXY()
-    # while True:
-    #     print(next(obj))
-    obj = DateIteratorYearOrWeek("C:/Users/artyo/PycharmProjects/labs/lab2/2/")
-    while True:
-        print(next(obj))
+    try:
+        # obj = DateIterator()
+        # while True:
+        #     print(next(obj))
+        # obj = DateIteratorXY()
+        # while True:
+        #     print(next(obj))
+        obj = DateIteratorYearOrWeek("C:/Users/artyo/PycharmProjects/labs/lab2/2/")
+        while True:
+            print(next(obj))
+    except StopIteration:
+        print("Out of bounds")
