@@ -1,5 +1,6 @@
 import pandas as pd
 from typing import NoReturn
+import os
 
 
 def formatted_file(input_file: str) -> pd.DataFrame:
@@ -16,22 +17,6 @@ def formatted_file(input_file: str) -> pd.DataFrame:
     return df
 
 
-def write_to_file(input_file: str, year: int) -> NoReturn:
-    """
-
-    :param input_file: file with dataset
-    :param year: single year for sorting info
-    :return: Nothing
-    """
-    df = formatted_file(input_file)
-
-    df = df[df["Year"] == year]
-    data = str(df["Day1"].iloc[0]).replace("-", "") + "_" + str(df["Day1"].iloc[df.shape[0] - 1]).replace("-", "")
-    del df["Year"]
-    del df["Day1"]
-    df.to_csv(data + ".csv", index=False)
-
-
 def range_of_date(input_file: str) -> list:
     """
     :param input_file: file with dataset
@@ -44,11 +29,28 @@ def range_of_date(input_file: str) -> list:
     return [start_range, end_range]
 
 
-if __name__ == "__main__":
+def write_to_file(input_file: str, output_directory: str) -> NoReturn:
+    """
 
-    file = "C:/Users/artyo/Desktop/dataset.csv"
+    :param output_directory:
+    :param input_file: file with dataset
+    :return: Nothing
+    """
+    if os.path.exists(input_file):
 
-    range_of_years = range_of_date(file)
-    for years in range(range_of_years[0], range_of_years[1] - 1, -1):
-        write_to_file(file, years)
+        if not os.path.exists(os.path.join(output_directory, 'data_to_years_output')):
+            os.mkdir(os.path.join(output_directory, 'data_to_years_output'))
+
+        _range_of_years = range_of_date(input_file)
+
+        for _years in range(_range_of_years[0], _range_of_years[1] - 1, -1):
+            df = formatted_file(input_file)
+            df = df[df["Year"] == _years]
+            data = str(df["Day1"].iloc[0]).replace("-", "") + "_" + str(df["Day1"].iloc[df.shape[0] - 1])\
+                .replace("-", "") + '.csv'
+            del df["Year"]
+            del df["Day1"]
+            df.to_csv(os.path.join(output_directory, 'data_to_years_output', data), index=False)
+    else:
+        raise FileNotFoundError
 

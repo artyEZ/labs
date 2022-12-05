@@ -4,18 +4,19 @@ import os
 
 class DateIterator:
 
-    def __init__(self):
+    def __init__(self, path):
         """
         Initiation of Class
         """
         self.counter = 0
-        self.df = pd.read_csv("C:/Users/artyo/Desktop/dataset.csv")
+        self.filename = path
+        self.df = pd.read_csv(path)
 
     def __next__(self) -> tuple:
         """
         :return: tuple with data and exchange rate for this data
         """
-        if os.path.exists("C:/Users/artyo/Desktop/dataset.csv"):
+        if os.path.exists(self.filename):
             if self.counter == self.df.shape[0]:
                 raise StopIteration
 
@@ -27,11 +28,11 @@ class DateIterator:
 
 class DateIteratorXY:
 
-    def __init__(self):
+    def __init__(self, path_x: str, path_y: str):
 
         self.counter = 0
-        self.xf = pd.read_csv("C:/Users/artyo/PycharmProjects/labs/lab2/1/X.csv")
-        self.yf = pd.read_csv("C:/Users/artyo/PycharmProjects/labs/lab2/1/Y.csv")
+        self.xf = pd.read_csv(path_x)
+        self.yf = pd.read_csv(path_y)
 
     def __next__(self) -> tuple:
         """
@@ -52,7 +53,7 @@ class DateIteratorYearOrWeek:
         self.counter = 0
         self.df = pd.DataFrame()
         for root, dirs, files in os.walk(name):
-            for filename in files[-2::-1]:
+            for filename in files[::-1]:
                 data = os.path.join(root, filename)
                 yf = pd.read_csv(data)
                 self.df = pd.concat([self.df, yf], ignore_index=True)
@@ -68,16 +69,16 @@ class DateIteratorYearOrWeek:
             return self.df.loc[self.counter - 1]["Day"], self.df.loc[self.counter - 1]["Exchange rate"]
 
 
-if __name__ == "__main__":
-    try:
-        # obj = DateIterator()
-        # while True:
-        #     print(next(obj))
-        # obj = DateIteratorXY()
-        # while True:
-        #     print(next(obj))
-        obj = DateIteratorYearOrWeek("C:/Users/artyo/PycharmProjects/labs/lab2/2/")
-        while True:
-            print(next(obj))
-    except StopIteration:
-        print("Out of bounds")
+# if __name__ == "__main__":
+#     try:
+#         # obj = DateIterator()
+#         # while True:
+#         #     print(next(obj))
+#         # obj = DateIteratorXY()
+#         # while True:
+#         #     print(next(obj))
+#         obj = DateIteratorYearOrWeek("C:/Users/artyo/PycharmProjects/labs/lab2/2/")
+#         while True:
+#             print(next(obj))
+#     except StopIteration:
+#         print("Out of bounds")

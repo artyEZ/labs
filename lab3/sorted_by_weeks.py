@@ -1,5 +1,6 @@
 import pandas as pd
 import autopep8
+import os
 
 
 def formatted_file(input_file: str) -> pd.DataFrame:
@@ -59,34 +60,41 @@ def min_week(df: pd.DataFrame) -> int:
     return value
 
 
-def write_to_file(input_file: str) -> None:
+def write_to_file(input_file: str, output_directory: str) -> None:
     """
+    :param output_directory:
     :param input_file: file with dataset
     :return: Nothing
     """
-    df = formatted_file(input_file)
-    range_of_years_list = range_of_years(input_file)
+    if os.path.exists(input_file):
 
-    for years in range(range_of_years_list[0], range_of_years_list[1] - 1, -1):
-        lf = df[df["Year"] == years]
+        if not os.path.exists(os.path.join(output_directory, 'data_to_weeks_output')):
+            os.mkdir(os.path.join(output_directory, 'data_to_weeks_output'))
 
-        for weeks in range(
-                max_week(lf), min_week(lf) - 1, -1):
-            try:
-                sf = lf[lf["Week"] == weeks]
-                if sf.empty:
-                    break
-                elif sf.shape[0] == 1:
-                    data = str(sf["Day1"].iloc[0]).replace("-", "") + "_" + str(sf["Day1"].iloc[0]).replace("-", "")
-                else:
-                    data = str(sf["Day1"].iloc[0]).replace("-", "") + "_" + str(sf["Day1"].iloc[-1]).replace("-", "")
-                clear_file(sf)
+        df = formatted_file(input_file)
+        range_of_years_list = range_of_years(input_file)
 
-                sf.to_csv(data + ".csv", index=False)
-            except Exception as e:
-                print(e)
+        for years in range(range_of_years_list[0], range_of_years_list[1] - 1, -1):
+            lf = df[df["Year"] == years]
+
+            for weeks in range(
+                    max_week(lf), min_week(lf) - 1, -1):
+                try:
+                    sf = lf[lf["Week"] == weeks]
+                    if sf.empty:
+                        break
+                    elif sf.shape[0] == 1:
+                        data = str(sf["Day1"].iloc[0]).replace("-", "") + "_" + \
+                               str(sf["Day1"].iloc[0]).replace("-", "") + ".csv"
+                    else:
+                        data = str(sf["Day1"].iloc[0]).replace("-", "") + "_" + \
+                               str(sf["Day1"].iloc[-1]).replace("-", "") + ".csv"
+                    clear_file(sf)
+
+                    sf.to_csv(os.path.join(output_directory, 'data_to_weeks_output', data), index=False)
+                except Exception as e:
+                    print(e)
+    else:
+        raise FileNotFoundError
 
 
-if __name__ == "__main__":
-    file = "C:/Users/artyo/Desktop/dataset.csv"
-    write_to_file(file)

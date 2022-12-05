@@ -1,22 +1,23 @@
 import pandas as pd
+import os
 
 
-def write_to_file(input_file: str, file_for_x: str, file_for_y: str) -> None:
+def write_to_file(input_file: str, output_directory: str) -> None:
     """
 
+    :param output_directory:
     :param input_file: Start file with dataset
-    :param file_for_x: File for the first column
-    :param file_for_y: File for the second column
     :return: Nothing
     """
-    df = pd.read_csv(input_file)
-    df["Day"].to_csv(file_for_x, index=False)
-    df["Exchange rate"].to_csv(file_for_y, index=False)
+    if os.path.exists(input_file):
 
+        if not os.path.exists(os.path.join(output_directory, 'divide_data_output')):
+            os.mkdir(os.path.join(output_directory, 'divide_data_output'))
 
-if __name__ == "__main__":
-    my_file_for_dates = "X.csv"
-    my_file_for_data = "Y.csv"
-    file = "C:/Users/artyo/Desktop/dataset.csv"
+        df = pd.read_csv(input_file)
+        df["Day"].to_csv(os.path.join(output_directory, 'divide_data_output', 'X.csv'), index=False)
+        df["Exchange rate"].to_csv(os.path.join(output_directory, 'divide_data_output', 'Y.csv'), index=False)
 
-    write_to_file(file, my_file_for_dates, my_file_for_data)
+    else:
+        raise FileNotFoundError
+
