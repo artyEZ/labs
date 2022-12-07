@@ -64,16 +64,22 @@ def get_data_from_week_and_years(input_directory: str, date: datetime.date) -> U
     :param date: necessary date
     :return: value for necessary date
     """
+    int_datetime = int(date.strftime('%Y%m%d'))
+
     if os.path.exists(input_directory):
         for root, dirs, files in os.walk(input_directory):
             for filename in files[0: -1:]:
-                df = pd.read_csv(os.path.join(root, filename))
+                words = filename.split('_')
+                words[1] = words[1].split('.', 1)[0]
 
-                for i in range(0, df.shape[0], 1):
-                    if df["Day"].iloc[i].replace("-", "") == str(date).replace("-", ""):
-                        return df.iloc[i]["Exchange rate"]
+                for word in range(int(words[0]), int(words[1]) - 1, -1):
+                    if word == int_datetime:
+                        df = pd.read_csv(os.path.join(root, filename))
 
-            return None
+                        for i in range(0, df.shape[0], 1):
+                            if df["Day"].iloc[i].replace("-", "") == str(date).replace("-", ""):
+                                return df.iloc[i]["Exchange rate"]
+                    pass
     raise FileNotFoundError
 
 

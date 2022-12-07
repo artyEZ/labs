@@ -21,7 +21,7 @@ def date_formatter(date: str) -> datetime.date:
     return datetime.date(year, month, day)
 
 
-class Example(QWidget):
+class DataSetApp(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -189,36 +189,12 @@ class Example(QWidget):
             bool: Is input correct or not
         """
 
-        if len(date) == 10:
-
-            if date[4] == '-' and date[7] == '-':
-
-                if int(date[:4]) > 0:
-
-                    if 0 < int(date[5:7]) <= 12:
-
-                        if 0 < int(date[8:]) <= 31:
-                            return True
-
-                        else:
-
-                            return False
-
-                    else:
-
-                        return False
-
-                else:
-
-                    return False
-
-            else:
-
-                return False
-
-        else:
-
-            return False
+        return (len(date) == 10 and
+                date[4] == '-' and
+                date[7] == '-' and
+                int(date[:4]) > 0 and
+                0 < int(date[5:7]) <= 12 and
+                0 < int(date[8:]) <= 31)
 
     def start_parser(self):
         """Creates a source file
@@ -580,5 +556,5 @@ class Example(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Example()
+    ex = DataSetApp()
     sys.exit(app.exec_())
